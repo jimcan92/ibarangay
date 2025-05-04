@@ -28,7 +28,7 @@ void main() async {
 
       await windowManager.setBackgroundColor(SystemTheme.accentColor.accent);
 
-      await windowManager.setMinimumSize(const Size(500, 600));
+      await windowManager.setMinimumSize(const Size(800, 600));
       await windowManager.show();
       await windowManager.setPreventClose(true);
       await windowManager.setSkipTaskbar(false);
@@ -45,36 +45,26 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(settingsProvider);
 
-    return SystemThemeBuilder(
-      builder: (context, accent) {
-        return FluentApp.router(
-          title: appTitle,
-          debugShowCheckedModeBanner: false,
-          themeMode: theme.mode,
-          theme: FluentThemeData(
-            brightness: Brightness.light,
-            accentColor: theme.color,
-          ),
-          darkTheme: FluentThemeData(
-            brightness: Brightness.dark,
-            accentColor: theme.color,
-          ),
-          builder: (context, child) {
-            return NavigationPaneTheme(
-              data: NavigationPaneThemeData(
-                backgroundColor:
-                    theme.effect != fa.WindowEffect.disabled
-                        ? Colors.transparent
-                        : null,
-              ),
-              child: child!,
-            );
-          },
-          routerDelegate: router.routerDelegate,
-          routeInformationParser: router.routeInformationParser,
-          routeInformationProvider: router.routeInformationProvider,
-        );
-      },
+    // ref
+    //     .read(settingsProvider.notifier)
+    //     .setWindowEffect(fa.WindowEffect.acrylic, context);
+
+    return FluentApp.router(
+      title: appTitle,
+      debugShowCheckedModeBanner: false,
+      // darkTheme: FluentThemeData.dark(),
+      themeMode: theme.mode,
+      theme: FluentThemeData(
+        brightness: Brightness.light,
+        accentColor: theme.color,
+      ),
+      darkTheme: FluentThemeData(
+        brightness: Brightness.dark,
+        accentColor: theme.color,
+      ),
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }

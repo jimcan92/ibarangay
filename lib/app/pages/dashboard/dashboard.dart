@@ -1,59 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibarangay/utils/page_info.dart';
 
 class DashboardPage extends StatelessWidget {
-  final List<DashboardCardInfo> items = [
-    DashboardCardInfo(
-      title: "Ordinances",
-      icon: FluentIcons.articles,
-      color: Colors.blue,
-      route: '/ordinances',
-    ),
-    DashboardCardInfo(
-      title: "Certificates",
-      icon: FluentIcons.certificate,
-      color: Colors.green,
-      route: '/certificates',
-    ),
-    DashboardCardInfo(
-      title: "Financials",
-      icon: FluentIcons.money,
-      color: Colors.orange,
-      route: '/financials',
-    ),
-    DashboardCardInfo(
-      title: "Health Reports",
-      icon: FluentIcons.health,
-      color: Colors.red,
-      route: '/health-reports',
-    ),
-    DashboardCardInfo(
-      title: "Livelihood",
-      icon: FluentIcons.teamwork,
-      color: Colors.purple,
-      route: '/livelihood',
-    ),
-    DashboardCardInfo(
-      title: "Bulletins",
-      icon: FluentIcons.taskboard,
-      color: Colors.teal,
-      route: '/bulletins',
-    ),
-    DashboardCardInfo(
-      title: "Meetings",
-      icon: FluentIcons.event,
-      color: Colors.orange,
-      route: '/users',
-    ),
-    DashboardCardInfo(
-      title: "Maps",
-      icon: FluentIcons.map_directions,
-      color: Colors.purple,
-      route: '/settings',
-    ),
-  ];
-
-  DashboardPage({super.key});
+  const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +20,7 @@ class DashboardPage extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return GridView.builder(
-              itemCount: items.length,
+              itemCount: pages.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: constraints.maxWidth ~/ 200,
                 crossAxisSpacing: 16,
@@ -78,14 +28,14 @@ class DashboardPage extends StatelessWidget {
                 childAspectRatio: 1,
               ),
               itemBuilder: (context, index) {
-                final item = items[index];
+                final item = pages[index];
                 return DashboardTile(
                   title: item.title,
                   icon: item.icon,
                   color: item.color,
                   onTap: () {
                     // print('Tapped on ${item["title"]}');
-                    context.go(item.route ?? '');
+                    context.go(item.route);
                   },
                 );
               },
@@ -146,22 +96,25 @@ class DashboardTile extends StatelessWidget {
                 ),
             ],
           ),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(icon, size: 40, color: Colors.white),
-                const SizedBox(height: 8),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(icon, size: 40, color: color.basedOnLuminance()),
+                  const SizedBox(height: 8),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: color.basedOnLuminance(),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

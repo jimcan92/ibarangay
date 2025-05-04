@@ -1,5 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ibarangay/app/models/address/address.dart';
+import 'package:ibarangay/app/models/certificate/certificate.dart';
+import 'package:ibarangay/app/models/doc/doc.dart';
 import 'package:ibarangay/app/models/household/household.dart';
 import 'package:ibarangay/app/models/purok/purok.dart';
 import 'package:ibarangay/app/models/resident/resident.dart';
@@ -16,6 +18,8 @@ final Map<Type, String> boxNameMap = {
   Purok: 'puroks',
   Sitio: 'sitios',
   User: 'users',
+  Doc: 'docs',
+  Certificate: 'certificates',
 };
 
 Box<T> getBox<T extends AppModel>() {
@@ -45,6 +49,10 @@ class HiveService {
     Hive.registerAdapter(SitioAdapter());
     Hive.registerAdapter(UserAdapter());
     Hive.registerAdapter(UserRoleAdapter());
+    Hive.registerAdapter(DocAdapter());
+    Hive.registerAdapter(DocCategoryAdapter());
+    Hive.registerAdapter(CertificateAdapter());
+    Hive.registerAdapter(CertificateTypeAdapter());
 
     await openBox<Resident>();
     await openBox<Household>();
@@ -52,6 +60,8 @@ class HiveService {
     await openBox<Purok>();
     await openBox<Sitio>();
     await openBox<User>();
+    await openBox<Doc>();
+    await openBox<Certificate>();
 
     if (getBox<User>().isEmpty) {
       var admin = User(

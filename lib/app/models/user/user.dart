@@ -66,4 +66,6 @@ enum UserRole {
         return Colors.orange;
     }
   }
+
+  bool get isAdmin => this == UserRole.admin;
 }

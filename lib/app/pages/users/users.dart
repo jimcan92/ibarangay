@@ -1,8 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ibarangay/app/models/user/user.dart';
-import 'package:ibarangay/app/providers/helper.dart';
 import 'package:ibarangay/app/providers/infobar/infobar.dart';
+import 'package:ibarangay/app/services/helper.dart';
 import 'package:ibarangay/app/services/hive.dart';
 import 'package:ibarangay/app/widgets/ui/buttons.dart';
 import 'package:ibarangay/utils/user.dart';

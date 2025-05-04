@@ -11,52 +11,33 @@ class Settings extends _$Settings {
   @override
   SettingsState build() => SettingsState(color: systemAccentColor);
 
-  void setThemeMode(ThemeMode mode) {
+  void setThemeMode(ThemeMode mode) async {
     state = state.copyWith(mode: mode);
   }
 
-  void setWindowEffect(WindowEffect effect, BuildContext context) async {
-    Window.setEffect(
-      effect: effect,
-      color:
-          [WindowEffect.solid, WindowEffect.acrylic].contains(effect)
-              ? FluentTheme.of(
-                context,
-              ).micaBackgroundColor.withValues(alpha: 0.05)
-              : Colors.transparent,
-      dark: FluentTheme.of(context).brightness.isDark,
-    );
-    state = state.copyWith(effect: effect);
+  void setAccentColor(AccentColor color) async {
+    state = state.copyWith(color: color);
   }
 }
 
 class SettingsState {
   final ThemeMode mode;
-  final WindowEffect effect;
   final AccentColor color;
 
-  SettingsState({
-    this.mode = ThemeMode.system,
-    this.effect = WindowEffect.disabled,
-    required this.color,
-  });
+  SettingsState({this.mode = ThemeMode.system, required this.color});
 
   SettingsState copyWith({
     ThemeMode? mode,
     WindowEffect? effect,
     AccentColor? color,
   }) {
-    return SettingsState(
-      mode: mode ?? this.mode,
-      effect: effect ?? this.effect,
-      color: color ?? this.color,
-    );
+    return SettingsState(mode: mode ?? this.mode, color: color ?? this.color);
   }
 }
 
 AccentColor get systemAccentColor {
   if (defaultTargetPlatform.supportsAccentColor) {
-    return AccentColor('system', {
+    return AccentColor('normal', {
       "lightest": SystemTheme.accentColor.lightest,
       'lighter': SystemTheme.accentColor.lighter,
       'light': SystemTheme.accentColor.light,

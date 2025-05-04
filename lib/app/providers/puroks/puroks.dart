@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ibarangay/app/models/purok/purok.dart';
-import 'package:ibarangay/app/providers/helper.dart';
+import 'package:ibarangay/app/services/helper.dart';
 import 'package:ibarangay/app/services/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

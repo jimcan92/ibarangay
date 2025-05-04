@@ -6,13 +6,6 @@ class ThemedButton extends StatelessWidget {
   final Widget child;
   late final ButtonStyle? style;
 
-  // const AppFilledButton({
-  //   super.key,
-  //   required this.onPressed,
-  //   required this.child,
-  //   this.style,
-  // });
-
   ButtonStyle styleFromColor(Color val) {
     final textColor =
         val.computeLuminance() > 0.5 ? Colors.black : Colors.white;
@@ -64,5 +57,72 @@ class ThemedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Button(onPressed: onPressed, style: style, child: child);
+  }
+}
+
+class TileButton extends StatelessWidget {
+  const TileButton({
+    super.key,
+    this.onPressed,
+    required this.title,
+    this.subtitle,
+    this.leading,
+    this.trailing,
+    this.leadingColor,
+    this.trailingColor,
+    this.leadingSize,
+    this.trailingSize,
+  });
+
+  final VoidCallback? onPressed;
+  final String title;
+  final String? subtitle;
+  final IconData? leading;
+  final IconData? trailing;
+  final Color? leadingColor;
+  final Color? trailingColor;
+  final double? leadingSize;
+  final double? trailingSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Button(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        padding: WidgetStatePropertyAll(
+          EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+        ),
+      ),
+      child: Row(
+        children: [
+          if (leading != null) ...[
+            Icon(leading, size: leadingSize ?? 24, color: leadingColor),
+            SizedBox(width: 16),
+          ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  textAlign: TextAlign.left,
+                  style: FluentTheme.maybeOf(context)!.typography.subtitle,
+
+                  // overflow: TextOverflow.ellipsis,
+                ),
+                if (subtitle != null)
+                  Text(
+                    subtitle!,
+                    textAlign: TextAlign.left,
+                    style: FluentTheme.maybeOf(context)!.typography.caption,
+                  ),
+              ],
+            ),
+          ),
+          // Spacer(),
+          Icon(trailing, color: trailingColor, size: trailingSize),
+        ],
+      ),
+    );
   }
 }

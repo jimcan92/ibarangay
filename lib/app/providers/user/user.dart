@@ -20,6 +20,8 @@ class UserBox extends _$UserBox {
 
     state = user;
 
+    print(user);
+
     return user != null;
   }
 

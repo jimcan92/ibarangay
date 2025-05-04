@@ -1,18 +1,17 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart' as fa;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ibarangay/app/providers/settings/settings.dart';
-import 'package:system_theme/system_theme.dart';
 
-final _WindowsWindowEffects = [
-  fa.WindowEffect.disabled,
-  fa.WindowEffect.solid,
-  fa.WindowEffect.transparent,
-  fa.WindowEffect.aero,
-  fa.WindowEffect.acrylic,
-  fa.WindowEffect.mica,
-  fa.WindowEffect.tabbed,
+const List<String> accentColorNames = [
+  'System',
+  'Yellow',
+  'Orange',
+  'Red',
+  'Magenta',
+  'Purple',
+  'Blue',
+  'Teal',
+  'Green',
 ];
 
 class SettingsPage extends ConsumerWidget {
@@ -25,52 +24,83 @@ class SettingsPage extends ConsumerWidget {
     return ScaffoldPage.scrollable(
       header: PageHeader(title: Text("Settings")),
       children: [
-        ToggleSwitch(
-          checked: settings.mode == ThemeMode.dark,
-          onChanged: (value) {
-            ref
-                .read(settingsProvider.notifier)
-                .setThemeMode(value ? ThemeMode.dark : ThemeMode.light);
-            ref
-                .read(settingsProvider.notifier)
-                .setWindowEffect(settings.effect, context);
-          },
-          content: Text("Dark Mode"),
+        Text('Theme mode', style: FluentTheme.of(context).typography.subtitle),
+        SizedBox(height: 10),
+        ...List.generate(ThemeMode.values.length, (index) {
+          final mode = ThemeMode.values[index];
+          final rawLabel = mode.toString().replaceAll('ThemeMode.', '');
+          final label = rawLabel[0].toUpperCase() + rawLabel.substring(1);
+
+          return Padding(
+            padding: const EdgeInsetsDirectional.only(bottom: 8.0),
+            child: RadioButton(
+              checked: settings.mode == mode,
+              onChanged: (value) {
+                if (value) {
+                  ref.read(settingsProvider.notifier).setThemeMode(mode);
+                }
+              },
+              content: Text(label),
+            ),
+          );
+        }),
+        SizedBox(height: 20),
+        Text(
+          'Accent Color',
+          style: FluentTheme.of(context).typography.subtitle,
         ),
-        const SizedBox(height: 20),
-        Button(
-          onPressed: () async {
-            await fa.Window.setEffect(effect: fa.WindowEffect.mica, dark: true);
-          },
-          child: Text("System Default"),
+        SizedBox(height: 10),
+        Wrap(
+          children: [
+            Tooltip(
+              message: accentColorNames[0],
+              child: _buildColorBlock(ref, systemAccentColor),
+            ),
+            ...List.generate(Colors.accentColors.length, (index) {
+              final color = Colors.accentColors[index];
+              return Tooltip(
+                message: accentColorNames[index + 1],
+                child: _buildColorBlock(ref, color),
+              );
+            }),
+          ],
         ),
-        if (defaultTargetPlatform.supportsAccentColor) ...[
-          Text(
-            'Window Transparency',
-            style: FluentTheme.of(context).typography.subtitle,
-          ),
-          Text(
-            'Running on ${defaultTargetPlatform.toString().replaceAll('TargetPlatform.', '')}',
-          ),
-          ...List.generate(_WindowsWindowEffects.length, (index) {
-            final mode = _WindowsWindowEffects[index];
-            return Padding(
-              padding: const EdgeInsetsDirectional.only(bottom: 8.0),
-              child: RadioButton(
-                checked: settings.effect == mode,
-                onChanged: (value) {
-                  if (value) {
-                    ref
-                        .read(settingsProvider.notifier)
-                        .setWindowEffect(mode, context);
-                  }
-                },
-                content: Text(mode.toString().replaceAll('WindowEffect.', '')),
-              ),
-            );
-          }),
-        ],
       ],
+    );
+  }
+
+  Widget _buildColorBlock(WidgetRef ref, AccentColor color) {
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Button(
+        onPressed: () {
+          ref.read(settingsProvider.notifier).setAccentColor(color);
+        },
+        style: ButtonStyle(
+          padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.isPressed) {
+              return color.light;
+            } else if (states.isHovered) {
+              return color.lighter;
+            }
+            return color;
+          }),
+        ),
+        child: Container(
+          height: 40,
+          width: 40,
+          alignment: AlignmentDirectional.center,
+          child:
+              ref.watch(settingsProvider).color == color
+                  ? Icon(
+                    FluentIcons.check_mark,
+                    color: color.basedOnLuminance(),
+                    size: 22.0,
+                  )
+                  : null,
+        ),
+      ),
     );
   }
 }

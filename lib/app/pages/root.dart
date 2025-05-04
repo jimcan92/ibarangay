@@ -2,10 +2,10 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibarangay/app/config.dart';
-import 'package:ibarangay/app/models/user/user.dart';
 import 'package:ibarangay/app/providers/infobar/infobar.dart';
 import 'package:ibarangay/app/providers/user/user.dart';
 import 'package:ibarangay/app/router.dart';
+import 'package:ibarangay/utils/page_info.dart';
 import 'package:window_manager/window_manager.dart';
 
 class RootPage extends ConsumerStatefulWidget {
@@ -20,6 +20,7 @@ class RootPage extends ConsumerStatefulWidget {
 
 class _RootPageState extends ConsumerState<RootPage> with WindowListener {
   int selected = 0;
+  bool admin = false;
 
   late final List<NavigationPaneItem> paneItems =
       [
@@ -30,32 +31,19 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
           body: const SizedBox.shrink(),
         ),
         PaneItemSeparator(),
-        PaneItem(
-          key: const ValueKey(AppRoutes.addresses),
-          icon: const Icon(FluentIcons.map_directions),
-          title: const Text('Addresses'),
-          body: const SizedBox.shrink(),
-        ),
-        PaneItem(
-          key: const ValueKey(AppRoutes.sitios),
-          icon: const Icon(FluentIcons.admin_d_logo_inverse32),
-          title: const Text('Sitios'),
-          body: const SizedBox.shrink(),
-        ),
-        PaneItem(
-          key: const ValueKey(AppRoutes.puroks),
-          icon: const Icon(FluentIcons.input_address),
-          title: const Text('Puroks'),
-          body: const SizedBox.shrink(),
-        ),
-        if (ref.watch(userBoxProvider) != null &&
-            ref.watch(userBoxProvider)?.role == UserRole.admin)
-          PaneItem(
-            key: const ValueKey(AppRoutes.users),
-            icon: const Icon(FluentIcons.account_management),
-            title: const Text('Users'),
+        ...pages.map(
+          (e) => PaneItem(
+            key: ValueKey(e.route),
+            icon: Icon(e.icon),
+            title: Text(e.title),
             body: const SizedBox.shrink(),
+            onTap: () {
+              if (GoRouterState.of(context).uri.toString() != e.route) {
+                context.go(e.route);
+              }
+            },
           ),
+        ),
       ].map<NavigationPaneItem>((e) {
         if (e is PaneItemExpander) {
           return PaneItemExpander(
@@ -73,6 +61,21 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
         if (e is PaneItem) return buildPaneItem(e);
         return e;
       }).toList();
+
+  late final List<NavigationPaneItem> adminPaneItems = [
+    PaneItemSeparator(),
+    PaneItem(
+      key: const ValueKey(AppRoutes.admin),
+      icon: const Icon(FluentIcons.admin),
+      title: const Text('Admin'),
+      body: const SizedBox.shrink(),
+      onTap: () {
+        if (GoRouterState.of(context).uri.toString() != AppRoutes.admin) {
+          context.go(AppRoutes.admin);
+        }
+      },
+    ),
+  ];
 
   late final List<NavigationPaneItem> footers = [
     PaneItemSeparator(),
@@ -101,9 +104,9 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
 
   @override
   void initState() {
-    super.initState();
-
     windowManager.addListener(this);
+
+    super.initState();
   }
 
   @override
@@ -135,8 +138,10 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
     });
 
     int calculateSelectedIndex(BuildContext context) {
-      final location = GoRouterState.of(context).uri.toString();
-      int indexOriginal = paneItems
+      final location =
+          "/${GoRouterState.of(context).uri.toString().split("/")[1]}";
+
+      int indexOriginal = (paneItems + adminPaneItems)
           .where((item) => item.key != null)
           .toList()
           .indexWhere((item) => item.key == Key(location));
@@ -150,7 +155,7 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
           return 0;
         }
 
-        return paneItems
+        return (paneItems + adminPaneItems)
                 .where((element) => element.key != null)
                 .toList()
                 .length +
@@ -160,14 +165,16 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
       }
     }
 
-    return NavigationView(
+    var navigationView = NavigationView(
       appBar: NavigationAppBar(
+        automaticallyImplyLeading: false,
+        leading: FlutterLogo(),
+        height: 40,
         title: Text(appTitle),
         actions: WindowCaption(
           backgroundColor: Colors.transparent,
           brightness: FluentTheme.of(context).brightness,
         ),
-        height: 35,
       ),
       pane:
           user == null
@@ -175,7 +182,8 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
               : NavigationPane(
                 selected: calculateSelectedIndex(context),
                 onChanged: onSelect,
-                items: paneItems,
+                items:
+                    user.role.isAdmin ? paneItems + adminPaneItems : paneItems,
                 footerItems: footers,
 
                 header: Container(
@@ -256,6 +264,7 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
               },
       content: user == null ? Login() : null,
     );
+    return navigationView;
   }
 
   @override
@@ -306,6 +315,24 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
   }
 }
 
+class WindowButtons extends StatelessWidget {
+  const WindowButtons({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final FluentThemeData theme = FluentTheme.of(context);
+
+    return SizedBox(
+      width: 138,
+      height: 50,
+      child: WindowCaption(
+        brightness: theme.brightness,
+        backgroundColor: Colors.transparent,
+      ),
+    );
+  }
+}
+
 class Login extends ConsumerStatefulWidget {
   const Login({super.key});
 
@@ -347,6 +374,18 @@ class _LoginState extends ConsumerState<Login> {
     usernameController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (ref.read(userBoxProvider) != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go(AppRoutes.root);
+      });
+
+      setState(() {});
+    }
+    super.didChangeDependencies();
   }
 
   @override

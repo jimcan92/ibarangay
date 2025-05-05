@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibarangay/app/models/certificate/certificate.dart';
+import 'package:ibarangay/app/models/resident/resident.dart';
+import 'package:ibarangay/app/services/pdf.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -218,7 +220,22 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Button(onPressed: generateInvoice, child: const Text('Generate PDF')),
+          Button(
+            onPressed: () async {
+              file = await generateBarangayClearance(
+                issuedTo: Resident(
+                  firstName: "Shielamae",
+                  lastName: "Cantila",
+                  middleName: "Dela Cruz",
+                  householdId: "householdId",
+                  status: CivilStatus.married,
+                  age: 32,
+                ),
+              );
+              setState(() {});
+            },
+            child: const Text('Generate Barangay Clearance'),
+          ),
           if (file != null) Expanded(child: SfPdfViewer.file(file!)),
         ],
       ),
@@ -246,6 +263,7 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
     // //Add invoice footer
     // drawFooter(page, pageSize);
     //Draw the image
+
     page.graphics.drawImage(
       PdfBitmap(File('C:\\Users\\jimcan\\Desktop\\san.png').readAsBytesSync()),
       Rect.fromLTWH(40, 25, 80, 80),
@@ -635,327 +653,8 @@ class NewCertificateDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                color: Colors.white.withAlpha(200),
-                width: 800,
-                height: 1000,
-                padding: EdgeInsets.all(50),
-                child: Container(
-                  decoration: BoxDecoration(border: Border.all()),
-                  padding: EdgeInsets.all(2),
-                  child: Container(
-                    decoration: BoxDecoration(border: Border.all()),
-                    padding: EdgeInsets.all(30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            FlutterLogo(size: 60),
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text:
-                                    "Republic of the Philippines\nProvince of Cebu\nMunicipality of Moalboal\n",
-
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: "Times New Roman",
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "Barangay Poblacion West",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            FlutterLogo(size: 60),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 24),
-                          child: Divider(
-                            style: DividerThemeData(
-                              // thickness: 10,
-                              decoration: BoxDecoration(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "OFFICE OF THE BARANGAY CAPTAIN",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontFamily: 'Times New Roman',
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "BARANGAY CLEARANCE",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 26,
-                                fontFamily: 'Times New Roman',
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 40),
-                        Text(
-                          "TO WHOM IT MAY CONCERN:",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontFamily: 'Times New Roman',
-                          ),
-                        ),
-                        SizedBox(height: 40),
-                        RichText(
-                          textAlign: TextAlign.justify,
-                          text: TextSpan(
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontFamily: 'Times New Roman',
-                              height: 1.5,
-                            ),
-                            children: [
-                              TextSpan(text: "This is to certify that "),
-                              TextSpan(
-                                text: "  Jimboy B Cantila  ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                              TextSpan(text: " , "),
-                              TextSpan(
-                                text: "  33  ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                              TextSpan(text: " years old, "),
-                              TextSpan(
-                                text: "  married  ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                              TextSpan(text: " and a resident of "),
-                              TextSpan(
-                                text: "Barangay Poblacion West, Moalboal, Cebu",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                text: " is known to be of good moral character",
-                              ),
-                              TextSpan(
-                                text:
-                                    " and law-abiding citizen in the community.",
-                              ),
-                            ],
-                          ),
-                          // text: "This is to certify that ${"Jimboy B. Cantila"}, ${33} years old, married and a resident of Barangay Poblacion West, Moalboal, Cebu is known to be of good moral character and law-abiding citizen in the community.",
-                          // textAlign: TextAlign.justify,
-
-                          // style: TextStyle(
-                          //   color: Colors.black,
-                          //   fontSize: 16,
-                          //   fontFamily: 'Times New Roman',
-                          //   leadingDistribution:
-                          //       TextLeadingDistribution
-                          //           .even,
-                          // ),
-                        ),
-                        SizedBox(height: 16),
-                        RichText(
-                          textAlign: TextAlign.justify,
-                          text: TextSpan(
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Times New Roman",
-                            ),
-                            children: [
-                              TextSpan(
-                                text:
-                                    "To certify further, that he/she has no derogatory",
-                              ),
-                              TextSpan(
-                                text:
-                                    " and/or criminal records filed in this barangay.",
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        RichText(
-                          textAlign: TextAlign.justify,
-                          text: TextSpan(
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Times New Roman",
-                              height: 1.5,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "ISSUED",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(text: " this "),
-                              TextSpan(
-                                text: "  23rd  ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                              TextSpan(text: " day of "),
-                              TextSpan(
-                                text: "  May  ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                              TextSpan(text: " , 2025 at "),
-                              TextSpan(
-                                text: "Barangay Poblacion West, Moalboal, Cebu",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                text: " upon request of the interested party",
-                              ),
-                              TextSpan(
-                                text:
-                                    " for whatever legal purposes it may serve.",
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 80),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 50),
-                              child: RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: "Times New Roman",
-                                    // height: 1.5
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: "JOEL B. LLORCA\n",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    TextSpan(text: "Barangay Captain"),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 80),
-                        Column(
-                          children: [
-                            Row(
-                              spacing: 10,
-                              children: [
-                                SizedBox(
-                                  width: 80,
-                                  child: Text(
-                                    "O.R. No.:",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: "Times New Roman",
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    border: Border(bottom: BorderSide()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              spacing: 10,
-                              children: [
-                                SizedBox(
-                                  width: 80,
-                                  child: Text(
-                                    "Date Issued:",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: "Times New Roman",
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    border: Border(bottom: BorderSide()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              spacing: 10,
-                              children: [
-                                SizedBox(
-                                  width: 80,
-                                  child: Text(
-                                    "Doc. Stamp:",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: "Times New Roman",
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    border: Border(bottom: BorderSide()),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+            child: SfPdfViewer.file(
+              File("D:\\jimcan\\projects\\flutter\\ibarangay\\Invoice.pdf"),
             ),
           ),
         ],

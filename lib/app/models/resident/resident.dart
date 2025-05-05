@@ -16,6 +16,10 @@ class Resident extends AppModel {
   final String? middleName;
   @HiveField(4)
   final String householdId;
+  @HiveField(5)
+  final int age;
+  @HiveField(6)
+  final CivilStatus status;
 
   Resident({
     String? id,
@@ -23,6 +27,8 @@ class Resident extends AppModel {
     required this.lastName,
     this.middleName,
     required this.householdId,
+    required this.age,
+    this.status = CivilStatus.single,
   }) : id = id ?? const Uuid().v4();
 
   @override
@@ -38,4 +44,14 @@ class Resident extends AppModel {
             : '';
     return '${firstName.trim()} $middleInitial${lastName.trim()}';
   }
+}
+
+@HiveType(typeId: 11)
+enum CivilStatus {
+  @HiveField(0)
+  married,
+  @HiveField(1)
+  single,
+  @HiveField(2)
+  separated,
 }

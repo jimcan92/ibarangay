@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ibarangay/app/models/address/address.dart';
+import 'package:ibarangay/app/models/barangay_details/barangay_details.dart';
 import 'package:ibarangay/app/models/certificate/certificate.dart';
 import 'package:ibarangay/app/models/doc/doc.dart';
 import 'package:ibarangay/app/models/household/household.dart';
@@ -20,6 +23,7 @@ final Map<Type, String> boxNameMap = {
   User: 'users',
   Doc: 'docs',
   Certificate: 'certificates',
+  BarangayDetails: 'details',
 };
 
 Box<T> getBox<T extends AppModel>() {
@@ -40,7 +44,13 @@ Future<void> openBox<T extends AppModel>() async {
 
 class HiveService {
   static Future<void> init() async {
-    await Hive.initFlutter();
+    final boxesFolder = Directory('${Directory.current.path}\\data\\boxes');
+
+    if (!boxesFolder.existsSync()) {
+      await boxesFolder.create(recursive: true);
+    }
+
+    Hive.init(boxesFolder.path);
 
     Hive.registerAdapter(ResidentAdapter());
     Hive.registerAdapter(HouseholdAdapter());
@@ -53,6 +63,7 @@ class HiveService {
     Hive.registerAdapter(DocCategoryAdapter());
     Hive.registerAdapter(CertificateAdapter());
     Hive.registerAdapter(CertificateTypeAdapter());
+    Hive.registerAdapter(BarangayDetailsAdapter());
 
     await openBox<Resident>();
     await openBox<Household>();
@@ -62,6 +73,7 @@ class HiveService {
     await openBox<User>();
     await openBox<Doc>();
     await openBox<Certificate>();
+    await openBox<BarangayDetails>();
 
     if (getBox<User>().isEmpty) {
       var admin = User(

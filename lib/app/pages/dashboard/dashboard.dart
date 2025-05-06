@@ -1,5 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibarangay/app/models/barangay_details/barangay_details.dart';
+import 'package:ibarangay/app/services/hive.dart';
+import 'package:ibarangay/app/widgets/ui/buttons.dart';
+import 'package:ibarangay/app/widgets/ui/dialogs/barangay_details.dart';
 import 'package:ibarangay/utils/page_info.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -17,30 +21,37 @@ class DashboardPage extends StatelessWidget {
       ),
       content: Padding(
         padding: const EdgeInsets.all(24),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return GridView.builder(
-              itemCount: pages.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: constraints.maxWidth ~/ 200,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 1,
+        child: Column(
+          children: [
+            SetBarangayDetailsInfobar(),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return GridView.builder(
+                    itemCount: pages.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: constraints.maxWidth ~/ 200,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 1,
+                    ),
+                    itemBuilder: (context, index) {
+                      final item = pages[index];
+                      return DashboardTile(
+                        title: item.title,
+                        icon: item.icon,
+                        color: item.color,
+                        onTap: () {
+                          // print('Tapped on ${item["title"]}');
+                          context.go(item.route);
+                        },
+                      );
+                    },
+                  );
+                },
               ),
-              itemBuilder: (context, index) {
-                final item = pages[index];
-                return DashboardTile(
-                  title: item.title,
-                  icon: item.icon,
-                  color: item.color,
-                  onTap: () {
-                    // print('Tapped on ${item["title"]}');
-                    context.go(item.route);
-                  },
-                );
-              },
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
@@ -120,5 +131,48 @@ class DashboardTile extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class SetBarangayDetailsInfobar extends StatefulWidget {
+  const SetBarangayDetailsInfobar({super.key});
+
+  @override
+  State<SetBarangayDetailsInfobar> createState() =>
+      _SetBarangayDetailsInfobarState();
+}
+
+class _SetBarangayDetailsInfobarState extends State<SetBarangayDetailsInfobar> {
+  @override
+  Widget build(BuildContext context) {
+    final notSet = getBox<BarangayDetails>().get('details') == null;
+
+    if (notSet) {
+      return Column(
+        children: [
+          InfoBar(
+            title: Text("Barangay Details Not Set."),
+            content: Text("Please set you barangay details."),
+            severity: InfoBarSeverity.warning,
+            action: ThemedButton.primary(
+              child: Text("Set"),
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return BarangayDetailsDialog();
+                  },
+                );
+
+                setState(() {});
+              },
+            ),
+          ),
+          SizedBox(height: 16),
+        ],
+      );
+    }
+
+    return SizedBox.shrink();
   }
 }

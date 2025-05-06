@@ -23,7 +23,7 @@ class AppRoutes {
   static const String sitios = "/sitios";
   static const String adminRecords = "/adminRecords";
   static const String certificates = "/certificates";
-  static const String populations = "/populations";
+  static const String residents = "/residents";
   static const String publicService = "/public-service";
   static const String financial = "/financial";
   static const String legal = "/legal";
@@ -110,7 +110,7 @@ final router = GoRouter(
           },
         ),
         GoRoute(
-          path: AppRoutes.populations,
+          path: AppRoutes.residents,
           builder: (context, state) {
             return Populations();
           },

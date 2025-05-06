@@ -2,9 +2,11 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibarangay/app/config.dart';
+import 'package:ibarangay/app/models/user/user.dart';
 import 'package:ibarangay/app/providers/infobar/infobar.dart';
 import 'package:ibarangay/app/providers/user/user.dart';
 import 'package:ibarangay/app/router.dart';
+import 'package:ibarangay/app/widgets/ui/dialogs/barangay_details.dart';
 import 'package:ibarangay/utils/page_info.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -21,6 +23,7 @@ class RootPage extends ConsumerStatefulWidget {
 class _RootPageState extends ConsumerState<RootPage> with WindowListener {
   int selected = 0;
   bool admin = false;
+  User? user;
 
   late final List<NavigationPaneItem> paneItems =
       [
@@ -81,6 +84,20 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
     PaneItemSeparator(),
     PaneItem(
       key: const ValueKey(AppRoutes.settings),
+      icon: const Icon(FluentIcons.info),
+      title: const Text('Barangay Details'),
+      body: const SizedBox.shrink(),
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return BarangayDetailsDialog();
+          },
+        );
+      },
+    ),
+    PaneItem(
+      key: const ValueKey(AppRoutes.settings),
       icon: const Icon(FluentIcons.settings),
       title: const Text('Settings'),
       body: const SizedBox.shrink(),
@@ -118,6 +135,8 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userBoxProvider);
+
+    bool hasUser = user != null;
 
     ref.listen<AppInfo?>(infobarProvider, (_, next) {
       if (next != null) {
@@ -165,7 +184,7 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
       }
     }
 
-    var navigationView = NavigationView(
+    return NavigationView(
       appBar: NavigationAppBar(
         automaticallyImplyLeading: false,
         leading: FlutterLogo(),
@@ -177,9 +196,8 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
         ),
       ),
       pane:
-          user == null
-              ? null
-              : NavigationPane(
+          hasUser
+              ? NavigationPane(
                 selected: calculateSelectedIndex(context),
                 onChanged: onSelect,
                 items:
@@ -247,11 +265,11 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
                     ],
                   ),
                 ),
-              ),
+              )
+              : null,
       paneBodyBuilder:
-          user == null
-              ? null
-              : (item, body) {
+          hasUser
+              ? (item, body) {
                 final name =
                     item?.key is ValueKey
                         ? (item!.key as ValueKey).value
@@ -261,10 +279,10 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
                   key: ValueKey('body$name'),
                   child: widget.child,
                 );
-              },
-      content: user == null ? Login() : null,
+              }
+              : null,
+      content: hasUser ? null : Login(),
     );
-    return navigationView;
   }
 
   @override

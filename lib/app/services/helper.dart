@@ -35,10 +35,20 @@ Future<PlatformFile?> pickDocument() async {
       // 'xlsx',
       // 'odt',
       // 'csv',
-      // 'jpg',
-      // 'png',
-      // 'jpeg',
     ],
+  );
+
+  if (result != null) {
+    return result.files.single;
+  }
+
+  return null;
+}
+
+Future<PlatformFile?> pickImage() async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['png'],
   );
 
   if (result != null) {
@@ -52,7 +62,7 @@ Future<String> saveDocumentTo(File file, String path, String filename) async {
   // await Directory(path).create(recursive: true);
   final folder = Directory(path);
   if (!folder.existsSync()) {
-    await folder.create();
+    await folder.create(recursive: true);
   }
 
   final stringPath = "$path\\$filename";

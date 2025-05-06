@@ -10,6 +10,7 @@ import 'package:ibarangay/app/models/purok/purok.dart';
 import 'package:ibarangay/app/models/resident/resident.dart';
 import 'package:ibarangay/app/models/sitio/sitio.dart';
 import 'package:ibarangay/app/models/user/user.dart';
+import 'package:ibarangay/utils/nationalities.dart';
 import 'package:ibarangay/utils/user.dart';
 
 import '../models/app_model.dart';
@@ -70,12 +71,15 @@ class HiveService {
     await openBox<Address>();
     await openBox<Purok>();
     await openBox<Sitio>();
-    await openBox<User>();
     await openBox<Doc>();
     await openBox<Certificate>();
     await openBox<BarangayDetails>();
+    await openBox<User>();
 
-    if (getBox<User>().isEmpty) {
+    final nationalitiesBox = await Hive.openBox<String>('nationalities');
+    final usersBox = getBox<User>();
+
+    if (usersBox.isEmpty) {
       var admin = User(
         id: 'admin',
         username: 'jimcan',
@@ -84,7 +88,11 @@ class HiveService {
         role: UserRole.admin,
       );
 
-      await getBox<User>().put(admin.uid, admin);
+      await usersBox.put(admin.uid, admin);
+    }
+
+    if (nationalitiesBox.isEmpty) {
+      nationalitiesBox.addAll(nationalities);
     }
   }
 }

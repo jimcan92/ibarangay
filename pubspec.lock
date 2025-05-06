@@ -928,21 +928,21 @@ packages:
     source: hosted
     version: "1.4.1"
   syncfusion_flutter_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: syncfusion_flutter_core
-      sha256: "458fb70ad9a6a5fa286a0062ddafa536038d21d6afffe2b0cd057e091108311f"
+      sha256: "4fb16cf25fa56f787f3991bbdea6241512a81cdbfad4255452f3fd01b7d5fb25"
       url: "https://pub.dev"
     source: hosted
-    version: "29.1.40"
+    version: "29.1.41"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_datagrid
-      sha256: "58628cdd07e39c389c18b4e2b740e23483d54089ab73db57e72619f7a9698f4b"
+      sha256: "87e6edaca0886c74e5305c33bc716ac67a4428302a34eaa77b44c1738bb46f37"
       url: "https://pub.dev"
     source: hosted
-    version: "29.1.40"
+    version: "29.1.41"
   syncfusion_flutter_pdf:
     dependency: "direct main"
     description:

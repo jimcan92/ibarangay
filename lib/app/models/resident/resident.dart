@@ -54,4 +54,8 @@ enum CivilStatus {
   single,
   @HiveField(2)
   separated,
+  @HiveField(3)
+  widdowed,
 }
+
+enum Gender { male, female }

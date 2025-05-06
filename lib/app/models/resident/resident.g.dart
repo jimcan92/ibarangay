@@ -71,6 +71,8 @@ class CivilStatusAdapter extends TypeAdapter<CivilStatus> {
         return CivilStatus.single;
       case 2:
         return CivilStatus.separated;
+      case 3:
+        return CivilStatus.widdowed;
       default:
         return CivilStatus.married;
     }
@@ -87,6 +89,9 @@ class CivilStatusAdapter extends TypeAdapter<CivilStatus> {
         break;
       case CivilStatus.separated:
         writer.writeByte(2);
+        break;
+      case CivilStatus.widdowed:
+        writer.writeByte(3);
         break;
     }
   }

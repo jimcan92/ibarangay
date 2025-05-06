@@ -9,8 +9,8 @@ import 'package:ibarangay/app/pages/dashboard/dashboard.dart';
 import 'package:ibarangay/app/pages/financials/financials.dart';
 import 'package:ibarangay/app/pages/legal/legal.dart';
 import 'package:ibarangay/app/pages/misc/misc.dart';
-import 'package:ibarangay/app/pages/populations/populations.dart';
 import 'package:ibarangay/app/pages/public_services/public_services.dart';
+import 'package:ibarangay/app/pages/residents/residents.dart';
 import 'package:ibarangay/app/pages/root.dart';
 import 'package:ibarangay/app/pages/settings/settings.dart';
 import 'package:ibarangay/app/pages/users/users.dart';
@@ -112,7 +112,7 @@ final router = GoRouter(
         GoRoute(
           path: AppRoutes.residents,
           builder: (context, state) {
-            return Populations();
+            return Residents();
           },
         ),
         GoRoute(

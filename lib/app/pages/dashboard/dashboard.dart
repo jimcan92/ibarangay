@@ -152,7 +152,7 @@ class _SetBarangayDetailsInfobarState extends State<SetBarangayDetailsInfobar> {
         children: [
           InfoBar(
             title: Text("Barangay Details Not Set."),
-            content: Text("Please set you barangay details."),
+            content: Text("Please set your barangay details."),
             severity: InfoBarSeverity.warning,
             action: ThemedButton.primary(
               child: Text("Set"),

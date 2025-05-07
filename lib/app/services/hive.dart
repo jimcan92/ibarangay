@@ -89,9 +89,9 @@ class HiveService {
     if (usersBox.isEmpty) {
       var admin = User(
         id: 'admin',
-        username: 'jimcan',
+        username: 'admin',
         password: hashPassword('admin'),
-        name: 'jimcan',
+        name: 'Administrator',
         role: UserRole.admin,
       );
 

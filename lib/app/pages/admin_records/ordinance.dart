@@ -60,7 +60,7 @@ class Ordinance extends StatelessWidget {
 
                     final path = await saveDocumentTo(
                       File(file.path!),
-                      '${Directory.current.path}\\docs',
+                      '${Directory.current.path}\\data\\docs',
                       file.name,
                     );
 

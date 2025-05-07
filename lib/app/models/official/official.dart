@@ -71,4 +71,31 @@ enum OfficialType {
         return "Barangay Councilor";
     }
   }
+
+  String get boxKey {
+    switch (this) {
+      case OfficialType.captain:
+        return "captain";
+      case OfficialType.skChairman:
+        return "skChairman";
+      case OfficialType.secretary:
+        return "secretary";
+      case OfficialType.treasurer:
+        return "treasurer";
+      case OfficialType.firstCouncilor:
+        return "firstCouncilor";
+      case OfficialType.seconCouncilor:
+        return "seconCouncilor";
+      case OfficialType.thirdCouncilor:
+        return "thirdCouncilor";
+      case OfficialType.fourthCouncilor:
+        return "fourthCouncilor";
+      case OfficialType.fifthCouncilor:
+        return "fifthCouncilor";
+      case OfficialType.sixthCouncilor:
+        return "sixthCouncilor";
+      case OfficialType.seventhCouncilor:
+        return "seventhCouncilor";
+    }
+  }
 }

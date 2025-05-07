@@ -37,8 +37,8 @@ class _OfficialsState extends State<Officials> {
                   },
                 );
               },
-              icon: Icon(FluentIcons.update_restore),
-              label: Text("Update"),
+              icon: Icon(FluentIcons.org),
+              label: Text("Manage Officials"),
             ),
           ],
           mainAxisAlignment: MainAxisAlignment.end,
@@ -71,6 +71,7 @@ class _OfficialsState extends State<Officials> {
                 padding: EdgeInsets.all(24),
                 child: Card(
                   child: Column(
+                    spacing: 20,
                     children: [
                       Row(
                         spacing: 20,
@@ -109,11 +110,17 @@ class _OfficialsState extends State<Officials> {
                         ],
                       ),
                       Expanded(
-                        child: ValueListenableBuilder(
-                          valueListenable: getBox<Official>().listenable(),
-                          builder: (context, officialsBox, child) {
-                            return SingleChildScrollView(
-                              child: Column(
+                        child: SingleChildScrollView(
+                          child: ValueListenableBuilder(
+                            valueListenable: getBox<Official>().listenable(),
+                            builder: (context, officialsBox, child) {
+                              if (officialsBox.isEmpty) {
+                                return Center(
+                                  child: Text("Please add officials"),
+                                );
+                              }
+
+                              return Column(
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -124,6 +131,11 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.captain,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type: OfficialType.captain,
+                                                  ),
                                             ),
                                       ),
                                     ],
@@ -143,6 +155,13 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.firstCouncilor,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType
+                                                            .firstCouncilor,
+                                                  ),
                                             ),
                                       ),
                                       OfficialCard(
@@ -151,6 +170,13 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.seconCouncilor,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType
+                                                            .seconCouncilor,
+                                                  ),
                                             ),
                                       ),
                                       OfficialCard(
@@ -159,6 +185,13 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.thirdCouncilor,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType
+                                                            .thirdCouncilor,
+                                                  ),
                                             ),
                                       ),
                                       OfficialCard(
@@ -167,6 +200,13 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.fourthCouncilor,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType
+                                                            .fourthCouncilor,
+                                                  ),
                                             ),
                                       ),
                                       OfficialCard(
@@ -175,6 +215,13 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.fifthCouncilor,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType
+                                                            .fifthCouncilor,
+                                                  ),
                                             ),
                                       ),
                                       OfficialCard(
@@ -183,6 +230,13 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.sixthCouncilor,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType
+                                                            .sixthCouncilor,
+                                                  ),
                                             ),
                                       ),
                                       OfficialCard(
@@ -191,6 +245,13 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.seventhCouncilor,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType
+                                                            .seventhCouncilor,
+                                                  ),
                                             ),
                                       ),
                                       OfficialCard(
@@ -199,6 +260,12 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.secretary,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType.secretary,
+                                                  ),
                                             ),
                                       ),
                                       OfficialCard(
@@ -207,6 +274,12 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.treasurer,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType.treasurer,
+                                                  ),
                                             ),
                                       ),
                                       OfficialCard(
@@ -215,14 +288,20 @@ class _OfficialsState extends State<Officials> {
                                               (o) =>
                                                   o.type ==
                                                   OfficialType.skChairman,
+                                              orElse:
+                                                  () => Official(
+                                                    id: "id",
+                                                    type:
+                                                        OfficialType.skChairman,
+                                                  ),
                                             ),
                                       ),
                                     ],
                                   ),
                                 ],
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -317,67 +396,82 @@ class _OfficialsDialogState extends State<OfficialsDialog> {
     captainController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.captain.name)?.id)
+              .get(officialsBox.get(OfficialType.captain.boxKey)?.id ?? "")
               ?.fullname,
     );
     skController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.skChairman.name)?.id)
+              .get(officialsBox.get(OfficialType.skChairman.boxKey)?.id ?? "")
               ?.fullname,
     );
     secretaryController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.secretary.name)?.id)
+              .get(officialsBox.get(OfficialType.secretary.boxKey)?.id ?? "")
               ?.fullname,
     );
     treasurerController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.treasurer.name)?.id)
+              .get(officialsBox.get(OfficialType.treasurer.boxKey)?.id ?? "")
               ?.fullname,
     );
     firstCouncilorController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.firstCouncilor.name)?.id)
+              .get(
+                officialsBox.get(OfficialType.firstCouncilor.boxKey)?.id ?? "",
+              )
               ?.fullname,
     );
     secondCouncilorController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.seconCouncilor.name)?.id)
+              .get(
+                officialsBox.get(OfficialType.seconCouncilor.boxKey)?.id ?? "",
+              )
               ?.fullname,
     );
     thirdCouncilorController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.thirdCouncilor.name)?.id)
+              .get(
+                officialsBox.get(OfficialType.thirdCouncilor.boxKey)?.id ?? "",
+              )
               ?.fullname,
     );
     fourthCouncilorController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.fourthCouncilor.name)?.id)
+              .get(
+                officialsBox.get(OfficialType.fourthCouncilor.boxKey)?.id ?? "",
+              )
               ?.fullname,
     );
     fifthCouncilorController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.fifthCouncilor.name)?.id)
+              .get(
+                officialsBox.get(OfficialType.fifthCouncilor.boxKey)?.id ?? "",
+              )
               ?.fullname,
     );
     sixthCouncilorController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.sixthCouncilor.name)?.id)
+              .get(
+                officialsBox.get(OfficialType.sixthCouncilor.boxKey)?.id ?? "",
+              )
               ?.fullname,
     );
     seventhCouncilorController = TextEditingController(
       text:
           residentsBox
-              .get(officialsBox.get(OfficialType.seventhCouncilor.name)?.id)
+              .get(
+                officialsBox.get(OfficialType.seventhCouncilor.boxKey)?.id ??
+                    "",
+              )
               ?.fullname,
     );
 
@@ -647,47 +741,47 @@ class _OfficialsDialogState extends State<OfficialsDialog> {
             }
 
             await getBox<Official>().putAll({
-              OfficialType.captain.name: Official(
+              OfficialType.captain.boxKey: Official(
                 id: captain!.id,
                 type: OfficialType.captain,
               ),
-              OfficialType.skChairman.name: Official(
+              OfficialType.skChairman.boxKey: Official(
                 id: sk!.id,
                 type: OfficialType.skChairman,
               ),
-              OfficialType.secretary.name: Official(
+              OfficialType.secretary.boxKey: Official(
                 id: secretary!.id,
                 type: OfficialType.secretary,
               ),
-              OfficialType.treasurer.name: Official(
+              OfficialType.treasurer.boxKey: Official(
                 id: treasurer!.id,
                 type: OfficialType.treasurer,
               ),
-              OfficialType.firstCouncilor.name: Official(
+              OfficialType.firstCouncilor.boxKey: Official(
                 id: firstCouncilor!.id,
                 type: OfficialType.firstCouncilor,
               ),
-              OfficialType.seconCouncilor.name: Official(
+              OfficialType.seconCouncilor.boxKey: Official(
                 id: secondCouncilor!.id,
                 type: OfficialType.seconCouncilor,
               ),
-              OfficialType.thirdCouncilor.name: Official(
+              OfficialType.thirdCouncilor.boxKey: Official(
                 id: thirdCouncilor!.id,
                 type: OfficialType.thirdCouncilor,
               ),
-              OfficialType.fourthCouncilor.name: Official(
+              OfficialType.fourthCouncilor.boxKey: Official(
                 id: fourthCouncilor!.id,
                 type: OfficialType.fourthCouncilor,
               ),
-              OfficialType.fifthCouncilor.name: Official(
+              OfficialType.fifthCouncilor.boxKey: Official(
                 id: fifthCouncilor!.id,
                 type: OfficialType.fifthCouncilor,
               ),
-              OfficialType.sixthCouncilor.name: Official(
+              OfficialType.sixthCouncilor.boxKey: Official(
                 id: sixthCouncilor!.id,
                 type: OfficialType.sixthCouncilor,
               ),
-              OfficialType.seventhCouncilor.name: Official(
+              OfficialType.seventhCouncilor.boxKey: Official(
                 id: seventhCouncilor!.id,
                 type: OfficialType.seventhCouncilor,
               ),
@@ -737,7 +831,7 @@ class OfficialCard extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  resident?.fullname ?? "Captain's name",
+                  resident?.fullname ?? "${official.type.name}'s name",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,

@@ -41,27 +41,21 @@ final List<PageInfo> pages = [
     route: AppRoutes.certificates,
   ),
   PageInfo(
-    title: "Public Services & Programs",
-    icon: FluentIcons.c_r_m_resource_optimization_app32,
+    title: "Users",
+    icon: FluentIcons.user_window,
     color: Colors.accentColors[5],
-    route: AppRoutes.publicService,
+    route: AppRoutes.users,
   ),
-  PageInfo(
-    title: "Financial Documents",
-    icon: FluentIcons.financial,
-    color: Colors.accentColors[6],
-    route: AppRoutes.financial,
-  ),
-  PageInfo(
-    title: "Legal & Complaint Records",
-    icon: FluentIcons.compare,
-    color: Colors.accentColors[7],
-    route: AppRoutes.legal,
-  ),
-  PageInfo(
-    title: "Miscellaneous",
-    icon: FluentIcons.grid_view_small,
-    color: Colors.accentColors[1],
-    route: AppRoutes.misc,
-  ),
+  // PageInfo(
+  //   title: "Financial Documents",
+  //   icon: FluentIcons.financial,
+  //   color: Colors.accentColors[6],
+  //   route: AppRoutes.financial,
+  // ),
+  // PageInfo(
+  //   title: "Legal & Complaint Records",
+  //   icon: FluentIcons.compare,
+  //   color: Colors.accentColors[7],
+  //   route: AppRoutes.legal,
+  // ),
 ];

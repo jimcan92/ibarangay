@@ -57,39 +57,52 @@ class Users extends ConsumerWidget {
               ],
             ),
           ),
-          content: ListView.builder(
-            itemCount: usersBox.length,
-            itemBuilder: (BuildContext context, int index) {
-              final user = usersBox.getAt(index)!;
+          content: Padding(
+            padding: const EdgeInsets.all(24),
+            child: ListView.builder(
+              itemCount: usersBox.length,
+              itemBuilder: (BuildContext context, int index) {
+                final user = usersBox.getAt(index)!;
 
-              return ListTile(
-                title: Text(user.username),
-                leading: Text("${index + 1}."),
-                onPressed: () async {
-                  final newUser = await showDialog<User>(
-                    context: context,
-                    builder: (context) {
-                      return AddEditUserDialog(user: user);
-                    },
-                  );
+                return TileButton(
+                  title: user.name ?? user.username,
+                  subtitle: user.username,
+                  leading: () {
+                    switch (user.role) {
+                      case UserRole.admin:
+                        return FluentIcons.admin;
+                      case UserRole.staff:
+                        return FluentIcons.user_followed;
+                      case UserRole.official:
+                        return FluentIcons.suitcase;
+                    }
+                  }(),
+                  onPressed: () async {
+                    final newUser = await showDialog<User>(
+                      context: context,
+                      builder: (context) {
+                        return AddEditUserDialog(user: user);
+                      },
+                    );
 
-                  if (newUser != null) {
-                    usersBox.delete(user.id);
-                    usersBox.put(newUser.id, newUser);
-                    ref
-                        .read(infobarProvider.notifier)
-                        .set(
-                          AppInfo.success(
-                            title: Text("Success!"),
-                            content: Text(
-                              "Successfully updated \"${newUser.username}\".",
+                    if (newUser != null) {
+                      usersBox.delete(user.id);
+                      usersBox.put(newUser.id, newUser);
+                      ref
+                          .read(infobarProvider.notifier)
+                          .set(
+                            AppInfo.success(
+                              title: Text("Success!"),
+                              content: Text(
+                                "Successfully updated \"${newUser.username}\".",
+                              ),
                             ),
-                          ),
-                        );
-                  }
-                },
-              );
-            },
+                          );
+                    }
+                  },
+                );
+              },
+            ),
           ),
         );
       },

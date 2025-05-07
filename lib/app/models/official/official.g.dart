@@ -56,7 +56,25 @@ class OfficialTypeAdapter extends TypeAdapter<OfficialType> {
       case 0:
         return OfficialType.captain;
       case 1:
-        return OfficialType.councelor;
+        return OfficialType.skChairman;
+      case 2:
+        return OfficialType.secretary;
+      case 3:
+        return OfficialType.treasurer;
+      case 4:
+        return OfficialType.firstCouncilor;
+      case 5:
+        return OfficialType.seconCouncilor;
+      case 6:
+        return OfficialType.thirdCouncilor;
+      case 7:
+        return OfficialType.fourthCouncilor;
+      case 8:
+        return OfficialType.fifthCouncilor;
+      case 9:
+        return OfficialType.sixthCouncilor;
+      case 10:
+        return OfficialType.seventhCouncilor;
       default:
         return OfficialType.captain;
     }
@@ -68,8 +86,35 @@ class OfficialTypeAdapter extends TypeAdapter<OfficialType> {
       case OfficialType.captain:
         writer.writeByte(0);
         break;
-      case OfficialType.councelor:
+      case OfficialType.skChairman:
         writer.writeByte(1);
+        break;
+      case OfficialType.secretary:
+        writer.writeByte(2);
+        break;
+      case OfficialType.treasurer:
+        writer.writeByte(3);
+        break;
+      case OfficialType.firstCouncilor:
+        writer.writeByte(4);
+        break;
+      case OfficialType.seconCouncilor:
+        writer.writeByte(5);
+        break;
+      case OfficialType.thirdCouncilor:
+        writer.writeByte(6);
+        break;
+      case OfficialType.fourthCouncilor:
+        writer.writeByte(7);
+        break;
+      case OfficialType.fifthCouncilor:
+        writer.writeByte(8);
+        break;
+      case OfficialType.sixthCouncilor:
+        writer.writeByte(9);
+        break;
+      case OfficialType.seventhCouncilor:
+        writer.writeByte(10);
         break;
     }
   }

@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:ibarangay/app/models/barangay_details/barangay_details.dart';
+import 'package:ibarangay/app/models/official/official.dart';
 import 'package:ibarangay/app/models/resident/resident.dart';
+import 'package:ibarangay/app/services/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -9,6 +12,8 @@ Future<File> generateBarangayClearance({
   required Resident issuedTo,
   DateTime? date,
 }) async {
+  final dataFolder = "${Directory.current.path}\\data";
+  final details = getBox<BarangayDetails>().get("details")!;
   //Create a PDF document.
   final PdfDocument document = PdfDocument();
   //Add page to the PDF
@@ -22,13 +27,13 @@ Future<File> generateBarangayClearance({
   );
 
   page.graphics.drawImage(
-    PdfBitmap(File('C:\\Users\\jimcan\\Desktop\\san.png').readAsBytesSync()),
+    PdfBitmap(File(details.logoPath).readAsBytesSync()),
     Rect.fromLTWH(40, 25, 80, 80),
   );
 
   //Draw text
   page.graphics.drawString(
-    'Republic of the Philippines\nProvince of Cebu\nMunicipality of Moalboal',
+    'Republic of the Philippines\nProvince of ${details.province}\nMunicipality of ${details.city}',
 
     PdfStandardFont(PdfFontFamily.timesRoman, 12),
     brush: PdfBrushes.black,
@@ -38,7 +43,7 @@ Future<File> generateBarangayClearance({
 
   //Draw text
   page.graphics.drawString(
-    'Barangay Poblacion West',
+    'Barangay ${details.name}',
 
     PdfStandardFont(PdfFontFamily.timesRoman, 18, style: PdfFontStyle.bold),
     brush: PdfBrushes.black,
@@ -82,7 +87,7 @@ Future<File> generateBarangayClearance({
 
   //Draw text
   page.graphics.drawString(
-    'This is to certify that ${issuedTo.fullname.toUpperCase()}, ${issuedTo.age} years old, ${issuedTo.civilStatus.name.toUpperCase()} and a resident of Barangay Poblacion West, Moalboal, Cebu is known to be of good moral character and law abiding citizen in the community.',
+    'This is to certify that ${issuedTo.fullname.toUpperCase()}, ${issuedTo.age} years old, ${issuedTo.civilStatus.name.toUpperCase()} and a resident of Barangay ${details.name}, ${details.city}, ${details.province} is known to be of good moral character and law abiding citizen in the community.',
 
     PdfStandardFont(PdfFontFamily.timesRoman, 12),
     brush: PdfBrushes.black,
@@ -134,7 +139,7 @@ Future<File> generateBarangayClearance({
   final year = now.year;
   //Draw text
   page.graphics.drawString(
-    'ISSUED this $dayWithSuffix day of $monthName, $year at Barangay Poblacion West, Moalboal, Cebu upon request of the interested party for whatever purpose it may serve.',
+    'ISSUED this $dayWithSuffix day of $monthName, $year at Barangay ${details.name}, ${details.city}, ${details.province} upon request of the interested party for whatever purpose it may serve.',
 
     PdfStandardFont(PdfFontFamily.timesRoman, 12),
     brush: PdfBrushes.black,
@@ -146,9 +151,15 @@ Future<File> generateBarangayClearance({
       lineSpacing: 10,
     ),
   );
+
+  final captain = getBox<Resident>().get(
+    getBox<Official>().values
+        .firstWhere((o) => o.type == OfficialType.captain)
+        .id,
+  );
   //Draw text
   page.graphics.drawString(
-    'JOEL B. LLORCA',
+    captain?.fullname.toUpperCase() ?? "<Barangay captain not found!>",
 
     PdfStandardFont(PdfFontFamily.timesRoman, 12, style: PdfFontStyle.bold),
     brush: PdfBrushes.black,
@@ -187,11 +198,17 @@ Future<File> generateBarangayClearance({
   final List<int> bytes = document.saveSync();
   //Dispose the document.
   document.dispose();
+
+  final path = "$dataFolder\\docs\\temp";
   //Save and launch the file.
-  return await saveAndLaunchFile(bytes, 'BC.pdf');
+  final folder = Directory(path);
+  if (!folder.existsSync()) {
+    await folder.create(recursive: true);
+  }
+  return await File("$path\\certificate.pfd").writeAsBytes(bytes, flush: true);
 }
 
-Future<File> saveAndLaunchFile(List<int> bytes, String fileName) async {
+Future<File> saveTemp(List<int> bytes, String fileName) async {
   //Get the storage folder location using path_provider package.
   String? path = Directory.current.path;
   // if (Platform.isAndroid ||
@@ -204,9 +221,7 @@ Future<File> saveAndLaunchFile(List<int> bytes, String fileName) async {
   // } else {
   //   path = await PathProviderPlatform.instance.getApplicationSupportPath();
   // }
-  final File file = File(
-    Platform.isWindows ? '$path\\$fileName' : '$path/$fileName',
-  );
+  final File file = File('$path\\$fileName');
   final res = await file.writeAsBytes(bytes, flush: true);
   print(res.path);
   return res;

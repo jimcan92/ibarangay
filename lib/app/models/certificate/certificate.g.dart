@@ -24,13 +24,14 @@ class CertificateAdapter extends TypeAdapter<Certificate> {
       issuedTo: fields[4] as String,
       amountPaid: fields[5] as double,
       dateIssued: fields[6] as DateTime,
+      purpose: fields[7] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Certificate obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class CertificateAdapter extends TypeAdapter<Certificate> {
       ..writeByte(5)
       ..write(obj.amountPaid)
       ..writeByte(6)
-      ..write(obj.dateIssued);
+      ..write(obj.dateIssued)
+      ..writeByte(7)
+      ..write(obj.purpose);
   }
 
   @override

@@ -19,6 +19,8 @@ class Certificate extends AppModel {
   final double amountPaid;
   @HiveField(6)
   final DateTime dateIssued;
+  @HiveField(7)
+  final String? purpose;
 
   Certificate({
     required this.id,
@@ -28,6 +30,7 @@ class Certificate extends AppModel {
     required this.issuedTo,
     this.amountPaid = 0,
     required this.dateIssued,
+    this.purpose,
   });
 
   @override

@@ -66,22 +66,33 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
       }).toList();
 
   late final List<NavigationPaneItem> adminPaneItems = [
-    PaneItemSeparator(),
-    PaneItem(
-      key: const ValueKey(AppRoutes.admin),
-      icon: const Icon(FluentIcons.admin),
-      title: const Text('Admin'),
-      body: const SizedBox.shrink(),
-      onTap: () {
-        if (GoRouterState.of(context).uri.toString() != AppRoutes.admin) {
-          context.go(AppRoutes.admin);
-        }
-      },
-    ),
+    // PaneItemSeparator(),
+    // PaneItem(
+    //   key: const ValueKey(AppRoutes.admin),
+    //   icon: const Icon(FluentIcons.admin),
+    //   title: const Text('Admin'),
+    //   body: const SizedBox.shrink(),
+    //   onTap: () {
+    //     if (GoRouterState.of(context).uri.toString() != AppRoutes.admin) {
+    //       context.go(AppRoutes.admin);
+    //     }
+    //   },
+    // ),
   ];
 
   late final List<NavigationPaneItem> footers = [
     PaneItemSeparator(),
+    PaneItem(
+      key: const ValueKey(AppRoutes.settings),
+      icon: const Icon(FluentIcons.settings),
+      title: const Text('Settings'),
+      body: const SizedBox.shrink(),
+      onTap: () {
+        if (GoRouterState.of(context).uri.toString() != AppRoutes.settings) {
+          context.go(AppRoutes.settings);
+        }
+      },
+    ),
     PaneItem(
       key: const ValueKey(AppRoutes.settings),
       icon: const Icon(FluentIcons.info),
@@ -94,17 +105,6 @@ class _RootPageState extends ConsumerState<RootPage> with WindowListener {
             return BarangayDetailsDialog();
           },
         );
-      },
-    ),
-    PaneItem(
-      key: const ValueKey(AppRoutes.settings),
-      icon: const Icon(FluentIcons.settings),
-      title: const Text('Settings'),
-      body: const SizedBox.shrink(),
-      onTap: () {
-        if (GoRouterState.of(context).uri.toString() != AppRoutes.settings) {
-          context.go(AppRoutes.settings);
-        }
       },
     ),
   ];

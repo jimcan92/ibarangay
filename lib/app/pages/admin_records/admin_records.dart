@@ -135,31 +135,6 @@ class AdminRecordsRoot extends StatelessWidget {
             onPressed: () {
               context.push(tile.location);
             },
-
-            // style: ButtonStyle(
-            //   padding: WidgetStatePropertyAll(
-            //     EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-            //   ),
-            // ),
-            // child: Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Text(
-            //           tile.title,
-            //           style: FluentTheme.maybeOf(context)!.typography.subtitle,
-            //         ),
-            //         Text(
-            //           tile.subtitle ?? tile.title,
-            //           style: FluentTheme.maybeOf(context)!.typography.caption,
-            //         ),
-            //       ],
-            //     ),
-            //     Icon(FluentIcons.chevron_right),
-            //   ],
-            // ),
           );
         },
       ),

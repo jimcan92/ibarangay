@@ -20,7 +20,7 @@ final List<PageInfo> pages = [
     title: "Barangay Officials",
     icon: FluentIcons.org,
     color: Colors.accentColors[1],
-    route: AppRoutes.adminRecords,
+    route: AppRoutes.officials,
   ),
   PageInfo(
     title: "Residents",

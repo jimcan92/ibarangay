@@ -17,25 +17,19 @@ class HouseholdAdapter extends TypeAdapter<Household> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Household(
-      id: fields[0] as String?,
-      addressId: fields[1] as String,
-      headOfFamilyId: fields[2] as String?,
-      residentIds: (fields[3] as List).cast<String>(),
+      id: fields[0] as String,
+      members: (fields[1] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Household obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.addressId)
-      ..writeByte(2)
-      ..write(obj.headOfFamilyId)
-      ..writeByte(3)
-      ..write(obj.residentIds);
+      ..write(obj.members);
   }
 
   @override

@@ -72,6 +72,24 @@ Future<String> saveDocumentTo(File file, String path, String filename) async {
   return res.path;
 }
 
+Future<File> saveDocumentWithDataTo(
+  Uint8List data,
+  String path,
+  String filename,
+) async {
+  // await Directory(path).create(recursive: true);
+  final folder = Directory(path);
+  if (!folder.existsSync()) {
+    await folder.create(recursive: true);
+  }
+
+  final stringPath = "$path\\$filename";
+
+  File file = File(stringPath);
+
+  return await file.writeAsBytes(data.buffer.asInt8List(), flush: true);
+}
+
 Future<void> deleteDocumentFrom(String path) async {
   await File(path).delete(recursive: true);
 }

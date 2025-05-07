@@ -6,6 +6,7 @@ import 'package:ibarangay/app/models/barangay_details/barangay_details.dart';
 import 'package:ibarangay/app/models/certificate/certificate.dart';
 import 'package:ibarangay/app/models/doc/doc.dart';
 import 'package:ibarangay/app/models/household/household.dart';
+import 'package:ibarangay/app/models/official/official.dart';
 import 'package:ibarangay/app/models/purok/purok.dart';
 import 'package:ibarangay/app/models/resident/resident.dart';
 import 'package:ibarangay/app/models/sitio/sitio.dart';
@@ -25,6 +26,7 @@ final Map<Type, String> boxNameMap = {
   Doc: 'docs',
   Certificate: 'certificates',
   BarangayDetails: 'details',
+  Official: 'officials',
 };
 
 Box<T> getBox<T extends AppModel>() {
@@ -65,6 +67,10 @@ class HiveService {
     Hive.registerAdapter(CertificateAdapter());
     Hive.registerAdapter(CertificateTypeAdapter());
     Hive.registerAdapter(BarangayDetailsAdapter());
+    Hive.registerAdapter(CivilStatusAdapter());
+    Hive.registerAdapter(GenderAdapter());
+    Hive.registerAdapter(OfficialAdapter());
+    Hive.registerAdapter(OfficialTypeAdapter());
 
     await openBox<Resident>();
     await openBox<Household>();
@@ -75,6 +81,7 @@ class HiveService {
     await openBox<Certificate>();
     await openBox<BarangayDetails>();
     await openBox<User>();
+    await openBox<Official>();
 
     final nationalitiesBox = await Hive.openBox<String>('nationalities');
     final usersBox = getBox<User>();

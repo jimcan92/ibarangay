@@ -9,7 +9,10 @@ import 'package:ibarangay/app/pages/dashboard/dashboard.dart';
 import 'package:ibarangay/app/pages/financials/financials.dart';
 import 'package:ibarangay/app/pages/legal/legal.dart';
 import 'package:ibarangay/app/pages/misc/misc.dart';
+import 'package:ibarangay/app/pages/officials/officials.dart';
 import 'package:ibarangay/app/pages/public_services/public_services.dart';
+import 'package:ibarangay/app/pages/residents/households.dart';
+import 'package:ibarangay/app/pages/residents/individuals.dart';
 import 'package:ibarangay/app/pages/residents/residents.dart';
 import 'package:ibarangay/app/pages/root.dart';
 import 'package:ibarangay/app/pages/settings/settings.dart';
@@ -23,7 +26,6 @@ class AppRoutes {
   static const String sitios = "/sitios";
   static const String adminRecords = "/adminRecords";
   static const String certificates = "/certificates";
-  static const String residents = "/residents";
   static const String publicService = "/public-service";
   static const String financial = "/financial";
   static const String legal = "/legal";
@@ -40,11 +42,16 @@ class AppRoutes {
       "/adminRecords/inventory_of_brgy_properties_&_equipment";
   static const String users = "/users";
   static const String admin = "/admin";
+  static const String officials = "/officials";
+  static const String residents = "/residents";
+  static const String households = "/residents/households";
+  static const String individuals = "/residents/individuals";
 }
 
 final rootNavkey = GlobalKey<NavigatorState>();
 final rootShellNavKey = GlobalKey<NavigatorState>();
 final adminRecordsShellNavKey = GlobalKey<NavigatorState>();
+final residentsShellNavKey = GlobalKey<NavigatorState>();
 
 final router = GoRouter(
   navigatorKey: rootNavkey,
@@ -62,10 +69,45 @@ final router = GoRouter(
           },
         ),
         GoRoute(
+          path: AppRoutes.officials,
+          builder: (context, state) {
+            return Officials();
+          },
+        ),
+        GoRoute(
           path: AppRoutes.settings,
           builder: (context, state) {
             return SettingsPage();
           },
+        ),
+        ShellRoute(
+          navigatorKey: residentsShellNavKey,
+          builder: (context, state, child) {
+            return Residents(
+              context: residentsShellNavKey.currentContext,
+              child: child,
+            );
+          },
+          routes: [
+            GoRoute(
+              path: AppRoutes.residents,
+              builder: (context, state) {
+                return ResidentsRoot();
+              },
+            ),
+            GoRoute(
+              path: AppRoutes.individuals,
+              builder: (context, state) {
+                return Individuals();
+              },
+            ),
+            GoRoute(
+              path: AppRoutes.households,
+              builder: (context, state) {
+                return Households();
+              },
+            ),
+          ],
         ),
         ShellRoute(
           navigatorKey: adminRecordsShellNavKey,
@@ -112,7 +154,7 @@ final router = GoRouter(
         GoRoute(
           path: AppRoutes.residents,
           builder: (context, state) {
-            return Residents();
+            return Individuals();
           },
         ),
         GoRoute(

@@ -82,7 +82,7 @@ Future<File> generateBarangayClearance({
 
   //Draw text
   page.graphics.drawString(
-    'This is to certify that ${issuedTo.fullname.toUpperCase()}, ${issuedTo.age} years old, ${issuedTo.status.name.toUpperCase()} and a resident of Barangay Poblacion West, Moalboal, Cebu is known to be of good moral character and law abiding citizen in the community.',
+    'This is to certify that ${issuedTo.fullname.toUpperCase()}, ${issuedTo.age} years old, ${issuedTo.civilStatus.name.toUpperCase()} and a resident of Barangay Poblacion West, Moalboal, Cebu is known to be of good moral character and law abiding citizen in the community.',
 
     PdfStandardFont(PdfFontFamily.timesRoman, 12),
     brush: PdfBrushes.black,

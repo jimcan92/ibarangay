@@ -227,9 +227,11 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
                   firstName: "Shielamae",
                   lastName: "Cantila",
                   middleName: "Dela Cruz",
-                  householdId: "householdId",
-                  status: CivilStatus.married,
-                  age: 32,
+                  gender: Gender.female,
+                  birthDate: DateTime.now(),
+                  // householdId: "householdId",
+                  // status: CivilStatus.married,
+                  // age: 32,
                 ),
               );
               setState(() {});
